@@ -62,7 +62,8 @@ uint8_t cover_switch_clusters_cnt = 0;
 zigbee_cover_cluster cover_clusters[3];
 uint8_t cover_clusters_cnt = 0;
 
-hal_zigbee_cluster  clusters[32];
+// Sized for Groups on every relay and cover endpoint (max layouts use ~34)
+hal_zigbee_cluster  clusters[40];
 hal_zigbee_endpoint endpoints[10];
 
 uint8_t allow_simultaneous_latching_pulses = 0;
@@ -385,6 +386,10 @@ void parse_config() {
             endpoints[cover_base + index].clusters = cluster_ptr;
         }
         cover_cluster_add_to_endpoint(&cover_clusters[index],
+                                      &endpoints[cover_base + index]);
+
+        // Group cluster is stateless, safe to add to multiple endpoints
+        group_cluster_add_to_endpoint(&group_cluster,
                                       &endpoints[cover_base + index]);
     }
 

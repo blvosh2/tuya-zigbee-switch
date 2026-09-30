@@ -109,7 +109,9 @@ hal_gpio_pull_t hal_gpio_parse_pull(const char *pull_str) {
         return HAL_GPIO_PULL_INVALID;
     }
 
-    if (strcmp(pull_str, "") == 0)
+    if (strcmp(pull_str, "") == 0 || strcmp(pull_str, "f") == 0 ||
+        strcmp(pull_str, "F") == 0 || strcmp(pull_str, "n") == 0 ||
+        strcmp(pull_str, "N") == 0)
         return HAL_GPIO_PULL_NONE;
 
     if (strcmp(pull_str, "u") == 0)

@@ -237,9 +237,11 @@ void cover_execute_action(zigbee_cover_cluster *cluster, cover_action_t action) 
     if (direction != cluster->moving) {
         relay_t *open_relay  = cluster->motor_reversal ? cluster->close_relay : cluster->open_relay;
         relay_t *close_relay = cluster->motor_reversal ? cluster->open_relay : cluster->close_relay;
+        // Interlock: always release the opposite relay before energizing,
+        // so both motor windings can never be powered at the same time.
         if (direction == ZCL_ATTR_WINDOW_COVERING_MOVING_OPENING) {
-            relay_on(open_relay);
             relay_off(close_relay);
+            relay_on(open_relay);
         } else if (direction == ZCL_ATTR_WINDOW_COVERING_MOVING_CLOSING) {
             relay_off(open_relay);
             relay_on(close_relay);
