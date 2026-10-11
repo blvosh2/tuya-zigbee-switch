@@ -302,7 +302,26 @@ void parse_config() {
 
             cover_clusters[cover_clusters_cnt].open_relay  = open_relay;
             cover_clusters[cover_clusters_cnt].close_relay = close_relay;
-            cover_clusters[cover_clusters_cnt].cover_idx   = cover_clusters_cnt;
+
+            // Optional direction LEDs: C<open><close>[<open led>[i]<close led>[i]]
+            char *led_cursor = entry + 5;
+            if (strlen(led_cursor) >= 4 &&
+                leds_cnt + 2 <= (int)(sizeof(leds) / sizeof(leds[0]))) {
+                led_t **direction_leds[2] = {
+                    &cover_clusters[cover_clusters_cnt].open_led,
+                    &cover_clusters[cover_clusters_cnt].close_led,
+                };
+                for (int index = 0; index < 2; index++) {
+                    hal_gpio_pin_t pin = hal_gpio_parse_pin(led_cursor);
+                    hal_gpio_init(pin, 0, HAL_GPIO_PULL_NONE);
+                    leds[leds_cnt].pin     = pin;
+                    leds[leds_cnt].on_high = led_cursor[2] != 'i';
+                    led_init(&leds[leds_cnt]);
+                    *direction_leds[index] = &leds[leds_cnt++];
+                    led_cursor            += led_cursor[2] == 'i' ? 3 : 2;
+                }
+            }
+            cover_clusters[cover_clusters_cnt].cover_idx = cover_clusters_cnt;
             cover_clusters_cnt++;
         } else if (entry[0] == 'i') {
             uint32_t image_type = parse_int(entry + 1);

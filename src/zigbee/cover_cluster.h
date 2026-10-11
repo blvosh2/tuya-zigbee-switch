@@ -1,6 +1,7 @@
 #ifndef _COVER_CLUSTER_H_
 #define _COVER_CLUSTER_H_
 
+#include "base_components/led.h"
 #include "base_components/relay.h"
 #include "hal/zigbee.h"
 #include "hal/tasks.h"
@@ -32,6 +33,8 @@ typedef struct {
     uint8_t              endpoint;
     relay_t *            open_relay;
     relay_t *            close_relay;
+    led_t *              open_led;  // Optional, lit while opening
+    led_t *              close_led; // Optional, lit while closing
 
     // Attributes
     uint8_t              moving;

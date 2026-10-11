@@ -142,6 +142,24 @@ void cover_update_position(zigbee_cover_cluster *cluster) {
     }
 }
 
+// Light the direction LED of the button that matches the current movement.
+void cover_update_leds(zigbee_cover_cluster *cluster) {
+    if (cluster->open_led != NULL) {
+        if (cluster->moving == ZCL_ATTR_WINDOW_COVERING_MOVING_OPENING) {
+            led_on(cluster->open_led);
+        } else {
+            led_off(cluster->open_led);
+        }
+    }
+    if (cluster->close_led != NULL) {
+        if (cluster->moving == ZCL_ATTR_WINDOW_COVERING_MOVING_CLOSING) {
+            led_on(cluster->close_led);
+        } else {
+            led_off(cluster->close_led);
+        }
+    }
+}
+
 void cover_cancel_movement_tasks(zigbee_cover_cluster *cluster) {
     hal_tasks_unschedule(&cluster->stop_task);
     hal_tasks_unschedule(&cluster->update_task);
@@ -224,6 +242,7 @@ void cover_execute_action(zigbee_cover_cluster *cluster, cover_action_t action) 
         relay_off(cluster->open_relay);
         cluster->last_switch_time = hal_millis();
         cluster->moving           = ZCL_ATTR_WINDOW_COVERING_MOVING_STOPPED;
+        cover_update_leds(cluster);
         hal_zigbee_notify_attribute_changed(cluster->endpoint,
                                             ZCL_CLUSTER_WINDOW_COVERING,
                                             ZCL_ATTR_WINDOW_COVERING_MOVING);
@@ -250,6 +269,7 @@ void cover_execute_action(zigbee_cover_cluster *cluster, cover_action_t action) 
 
         cluster->last_switch_time = hal_millis();
         cluster->moving           = direction;
+        cover_update_leds(cluster);
         hal_zigbee_notify_attribute_changed(cluster->endpoint,
                                             ZCL_CLUSTER_WINDOW_COVERING,
                                             ZCL_ATTR_WINDOW_COVERING_MOVING);
