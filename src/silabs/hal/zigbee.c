@@ -6,7 +6,8 @@
 #include <stddef.h>
 #include <string.h>
 
-#define MAX_CLUSTERS    32
+// Same worst case as the cluster pool in config_parser.c (38)
+#define MAX_CLUSTERS    40
 #define MAX_ATTRS       128
 
 sl_zigbee_af_endpoint_type_t      endpoint_type_buffer[ZCL_FIXED_ENDPOINT_COUNT];
