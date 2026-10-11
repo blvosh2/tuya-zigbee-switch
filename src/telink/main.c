@@ -17,6 +17,7 @@
 #include "hal/zigbee.h"
 
 int real_main(startup_state_e state);
+void telink_capture_reset_info(void);
 
 static _attribute_ram_code_sec_ bool is_bootloader_mode(void) {
     // Check if we are in bootloader mode by reading the flag
@@ -50,6 +51,7 @@ int real_main(startup_state_e state) {
     irq_enable();
 
     if (!isRetention) {
+        telink_capture_reset_info();
         app_init();
     }
 #ifdef ZB_ED_ROLE

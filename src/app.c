@@ -43,7 +43,22 @@ void process_device_type_change() {
     }
 }
 
+uint16_t g_boot_count;
+uint16_t g_reset_info;
+
+// Count boots in NV, so unexpected reboots can be seen from the coordinator.
+static void count_boot(void) {
+    if (hal_nvm_read(NV_ITEM_BOOT_COUNT, sizeof(g_boot_count),
+                     (uint8_t *)&g_boot_count) != HAL_NVM_SUCCESS) {
+        g_boot_count = 0;
+    }
+    g_boot_count++;
+    hal_nvm_write(NV_ITEM_BOOT_COUNT, sizeof(g_boot_count), (uint8_t *)&g_boot_count);
+    g_reset_info = hal_system_reset_info();
+}
+
 void app_init(void) {
+    count_boot();
     handle_version_changes();
     parse_config(); // Does most of the setup, including all callbacks
                     // registration
