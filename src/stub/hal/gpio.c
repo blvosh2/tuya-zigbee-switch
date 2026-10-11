@@ -114,6 +114,9 @@ hal_gpio_pull_t hal_gpio_parse_pull(const char *pull_str) {
     switch (pull_str[0]) {
     case '\0':
     case 'f':
+    case 'F':
+    case 'n':
+    case 'N':
         return HAL_GPIO_PULL_NONE;
 
     case 'u':
@@ -123,6 +126,7 @@ hal_gpio_pull_t hal_gpio_parse_pull(const char *pull_str) {
         return HAL_GPIO_PULL_UP_1M;
 
     case 'd':
+    case 'D':
         return HAL_GPIO_PULL_DOWN;
 
     default:
