@@ -5301,6 +5301,33 @@ SWITCH_LORATAP_TS130F:
   info: Supported
   threads: https://github.com/romasku/tuya-zigbee-switch/issues/421
   store: null
+SWITCH_LORATAP_SC400ZB_V7:
+  human_name: LoraTap SC400ZB-US-V7 curtains switch
+  category: switch
+  power: mains
+  neutral: required
+  output: relay
+  device_type: router
+  stock_model_name: TS130F
+  stock_manufacturer_name: _TZ3000_cet6ch1r
+  stock_converter_manufacturer: Tuya
+  stock_converter_model: TS130F
+  override_z2m_device: null
+  tuya_module: ZT3L
+  mcu_family: Telink
+  mcu: TLSR8258
+  config_str: cet6ch1r;TS130F-LT7;LC2i;XC4C0fB5f;CD7D2D4A0;
+  alt_config_str: null
+  old_manufacturer_names: null
+  old_zb_models: null
+  stock_manufacturer_id: 4417
+  stock_image_type: 54179
+  firmware_image_type: 47119
+  build: yes
+  status: in_progress
+  info: Blue LEDs show the moving direction; open LED pin not yet verified on hardware
+  threads: null
+  store: null
 SWITCH_MANHOT_A_TS0011:
   human_name: Manhot 🅰 1-gang switch
   category: switch
