@@ -13,10 +13,6 @@ void hal_system_reset(void) {
     exit(0);
 }
 
-uint16_t hal_system_reset_info(void) {
-    return 0;
-}
-
 void hal_factory_reset(void) {
     io_log("SYSTEM", "Factory reset requested - performing stub factory reset");
     io_log(
