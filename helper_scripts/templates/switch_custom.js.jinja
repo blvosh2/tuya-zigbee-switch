@@ -241,6 +241,11 @@ const romasku = {
                     } else if (part[0] == 'C') {
                         validatePin(part.slice(1,3));
                         validatePin(part.slice(3,5));
+                        // Optional direction LEDs: C<open><close>[<open led>[i]<close led>[i]]
+                        const leds = part.slice(5);
+                        if (leds.length > 0 && !/^[A-D][0-7]i?[A-D][0-7]i?$/.test(leds)) {
+                            throw new Error(`Cover LEDs ${leds} are invalid. Use <open led>[i]<close led>[i], e.g. D4A0`);
+                        }
                     } else if (part[0] == 'L' || part[0] == 'R' || part[0] == 'I') {
                         validatePin(part.slice(1,3));
                     } else if(part[0] == 'M') {
